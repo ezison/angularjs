@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="utf-8">
+		<meta content="IE=edge" http-equiv="X-UA-Compatible">
+		<meta content="no-cache" http-equiv="Pragma">
+		<meta content="no-store" http-equiv="Cache-Control">
+		<meta content="no-cache" http-equiv="Cache-Control">
+		<meta content="Mon, 26 Jul 1997 05:00:00 GMT" http-equiv="Expires">
+		<meta content="width=device-width, initial-scale=1, minimum-scale = 1.0, maximum-scale = 1.0, user-scalable = no" name="viewport">
+
+		<title>AngularJs Sample</title>
+
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+
+		<script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.7/angular.js" type="text/javascript"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" type="text/javascript"></script>
+
+		<style type="text/css">
+
+			.red {
+				background-color: red;
+			}
+			.blue {
+				background-color: blue;
+			}
+			.green {
+				background-color: green;
+			}
+			.yellow {
+				background-color: yellow;
+			}
+			.black {
+				background-color: black;
+			}
+
+		</style>
+
+		<script type="text/javascript">
+
+					(function() {
+
+					var _app = null;
+							_app = angular.module('App', []);
+							_app.controller('MainController', ['$scope', function MainController($scope) {
+
+							$scope.loadData = $("#loadDataInit").text();
+									// users model initial value
+									$scope.data = {};
+									$scope.$watchGroup(['data.text1', 'data.textarea1'], function(newVals, oldVals, scope) {
+
+									if (!scope.data.text1) {
+									scope.data.text1 = '';
+									}
+
+									if (!scope.data.textarea1) {
+									scope.data.textarea1 = '';
+									}
+
+									scope.data.text1AndTextarea1 = scope.data.text1 + " : " + scope.data.textarea1;
+									});
+									$scope.onLoad = function() {
+
+									var data = $scope.loadData;
+											var dataObj = JSON.parse(data);
+											$scope.data = dataObj;
+									};
+									$scope.onPost = function() {
+
+									$scope.postData = $.param($scope.data);
+									};
+									$scope.addRecord = function() {
+									$scope.data.foreachList.push({"foreachText1": "empty1", "foreachText2": "empty2"});
+									};
+									$scope.delRecord = function(index) {
+									$scope.data.foreachList.splice(index, 1);
+									};
+									$scope.addNestRecord = function() {
+									$scope.data.foreachNestList.push({"foreachNestText1": "empty1", "foreachNestText2": "empty2", "nestList": []});
+									};
+									$scope.delNestRecord = function(index) {
+									$scope.data.foreachNestList.splice(index, 1);
+									};
+									$scope.addNestInnerRecord = function(index) {
+									$scope.data.foreachNestList[index].nestList.push({"nestText1": "empty1 inner", "nestText2": "empty2 inner"});
+									};
+									$scope.delNestInnerRecord = function(index, indexInner) {
+									$scope.data.foreachNestList[index].nestList.splice(indexInner, 1);
+									};
+							}]);
+					})();
+					$(function() {
+
+					$(document).on("mouseenter", '[data-toggle="tooltip"]', function() {
+					$(this).tooltip({trigger: 'manual'});
+							$(this).tooltip('show');
+					});
+							$(document).on("mouseleave", '[data-toggle="tooltip"]', function() {
+					$(this).tooltip('hide');
+							$(this).tooltip('destroy');
+					});
+					});</script>
+
+	</head>
+	<body ng-app="App">
+
+		<div id="loadDataInit" style="display: none;">{
+			"visibleTest": false
+			, "withBind": {
+			"withValue": "withValue"
+			}
+			, "foreachList": [
+			{"foreachText1": "row1 text1", "foreachText2": "row1 text2"}
+			, {"foreachText1": "row2 text1", "foreachText2": "row2 text2"}
+			, {"foreachText1": "row3 text1", "foreachText2": "row3 text2"}
+			]
+			, "foreachNestList": [
+			{"foreachNestText1": "row1 text1", "foreachNestText2": "row1 text2"
+			,"nestList": [
+			{"nestText1": "row1-1 nest1", "nestText2": "row1-1 nest2"}
+			, {"nestText1": "row1-2 nest1", "nestText2": "row1-2 nest2"}
+			]
+			}
+			, {"foreachNestText1": "row2 text1", "foreachNestText2": "row2 text2"
+			,"nestList": []
+			}
+			, {"foreachNestText1": "row3 text1", "foreachNestText2": "row3 text2"
+			,"nestList": []
+			}
+			]
+			}
+		</div>
+
+		<div class="container-fluid" ng-controller="MainController">
+
+			<div style="margin: 2em 2em">
+
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Angular JS ロードデータ（Json）
+					</div>
+					<div class="panel-body">
+						<div class="form-group">
+							<label class="col-xs-2 control-label">Json</label>
+							<div class="col-xs-10">
+								<textarea class="form-control" name="loadData" value="" rows="15" ng-model="loadData">
+								</textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-xs-10 col-xs-offset-2">
+								<br />
+								<button id="loadDataButton" type="button" class="btn btn-primary" ng-click="onLoad()">Load Data ↓↓↓</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<form id="form"
+					  accept-charset="utf-8"
+					  action=""
+					  method="post"
+					  class="form-horizontal"
+					  >
+
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							Angular Js サンプルフォーム
+						</div>
+						<div class="panel-body">
+
+							<div class="form-group">
+								<label class="col-xs-2 control-label">if / ifnotバインディング（domから追加・削除）</label>
+								<div class="col-xs-10">
+									<div class="form-control-static">
+										<input type="checkbox" value="visible" ng-model="visibleTest" />&nbsp;&nbsp;
+										<span ng-if="visibleTest">チェックされたら表示されます</span>
+										&nbsp;
+										&nbsp;
+										<span ng-if="!visibleTest">チェックされたら非表示になります</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-xs-2 control-label">show / hideバインディング（ display: noneを付与・削除）</label>
+								<div class="col-xs-10">
+									<div class="form-control-static">
+										<input type="checkbox" value="visible" ng-model="visibleTest" />&nbsp;&nbsp;
+										<span ng-show="visibleTest">チェックされたら表示されます</span>
+										&nbsp;
+										&nbsp;
+										<span ng-hide="visibleTest">チェックされたら非表示になります</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-xs-2 control-label">foreachバインディング</label>
+								<div class="col-xs-10">
+									<div style="margin-bottom: .5em;">
+										<button type="button" id="foreachAdd" class="btn btn-default" ng-click="addRecord()">追加</button>
+									</div>
+									<div ng-repeat="data in data.foreachList track by $index">
+										<div style="margin-bottom: .5em;" class="foreachRecord" index="{{$index}}">
+											<input name="{{'foreachList[' + $index + '][foreachText1]'}}" type="text" value="" class="form-control" style="display: inline-block; width: 40%;"
+												   ng-model="data.foreachText1" />
+											<input name="{{'foreachList[' + $index + '][foreachText1]'}}" type="text" value="" class="form-control" style="display: inline-block; width: 40%;"
+												   ng-model="data.foreachText2" />
+											<button type="button" class="foreachDel btn btn-default" ng-click="delRecord($index)">削除</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-xs-2 control-label">foreachバインディング（Nest）</label>
+								<div class="col-xs-10">
+									<div style="margin-bottom: .5em;">
+										<button type="button" id="foreachNestAdd" class="btn btn-default" ng-click="addNestRecord()">追加</button>
+									</div>
+									<div ng-repeat="dd in data.foreachNestList track by $index">
+
+										<div class="foreachNestRecord"
+											 style="margin-bottom: .5em;"
+											 index="{{$index}}">
+
+											<input name="{{'foreachNestList[' + $index + '][foreachNestText1]'}}" type="text" value="" class="form-control" style="display: inline-block; width: 40%;"
+												   ng-model="dd.foreachNestText1" />
+											<input name="{{'foreachNestList[' + $index + '][foreachNestText2]'}}" type="text" value="" class="form-control" style="display: inline-block; width: 40%;"
+												   ng-model="dd.foreachNestText2" />
+											<button type="button" class="foreachNestDel btn btn-default" ng-click="delNestRecord($index)">削除</button>
+
+											<div style="margin: .5em; margin-left: 2em;">
+												<button type="button" id="foreachNestNestAdd" class="btn btn-default" ng-click="addNestInnerRecord($index)">追加</button>
+											</div>
+
+											<div ng-repeat="dataInner in dd.nestList track by $index">
+												<div class ="foreachNestNestRecord"
+													 style="margin-bottom: .5em; margin-left: 2em;"
+													 index="{{$index}}">
+
+													<input name="{{'foreachNestList[' + $parent.$index + '][' + $indexInner + '][nestText1]'}}" type="text" value="" class="form-control" style="display: inline-block; width: 20%;"
+														   ng-model="dataInner.nestText1" />
+													<input name="{{'foreachNestList[' + $parent.$index + '][' + $indexInner + '][nestText2]'}}" type="text" value="" class="form-control" style="display: inline-block; width: 20%;"
+														   ng-model="dataInner.nestText2" />
+													<button type="button" class="foreachNestNestDel btn btn-default" ng-click="delNestInnerRecord($parent.$index, $index)">削除</button>
+
+												</div>
+											</div>
+
+										</div>
+
+										<hr />
+
+									</div>
+								</div>
+							</div>
+
+
+							<div class="form-group">
+								<div class="col-xs-10 col-xs-offset-2">
+									<button id="submit" type="button" class="btn btn-primary" ng-click="onPost()">Submit Data ↓↓↓</button>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-xs-10 col-xs-offset-2">
+									<p class="form-control" name="submitData" rows="5" ng-cloak>{{postData}}</p>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+				</form>
+
+			</div>
+
+		</div>
+	</body>
+</html>
