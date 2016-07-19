@@ -202,8 +202,8 @@
 									<div style="margin-bottom: .5em;">
 										<button type="button" id="foreachAdd" class="btn btn-default" ng-click="addRecord()">追加</button>
 									</div>
-									<div ng-repeat="data in data.foreachList track by $index">
-										<div style="margin-bottom: .5em;" class="foreachRecord" index="{{$index}}">
+									<div>
+										<div style="margin-bottom: .5em;" class="foreachRecord" ng-repeat="data in data.foreachList track by $index" index="{{$index}}">
 											<input name="{{'foreachList[' + $index + '][foreachText1]'}}" type="text" value="" class="form-control" style="display: inline-block; width: 40%;"
 												   ng-model="data.foreachText1" />
 											<input name="{{'foreachList[' + $index + '][foreachText1]'}}" type="text" value="" class="form-control" style="display: inline-block; width: 40%;"
@@ -220,10 +220,11 @@
 									<div style="margin-bottom: .5em;">
 										<button type="button" id="foreachNestAdd" class="btn btn-default" ng-click="addNestRecord()">追加</button>
 									</div>
-									<div ng-repeat="dd in data.foreachNestList track by $index">
+									<div>
 
 										<div class="foreachNestRecord"
 											 style="margin-bottom: .5em;"
+											 ng-repeat="dd in data.foreachNestList track by $index"
 											 index="{{$index}}">
 
 											<input name="{{'foreachNestList[' + $index + '][foreachNestText1]'}}" type="text" value="" class="form-control" style="display: inline-block; width: 40%;"
@@ -236,9 +237,10 @@
 												<button type="button" id="foreachNestNestAdd" class="btn btn-default" ng-click="addNestInnerRecord($index)">追加</button>
 											</div>
 
-											<div ng-repeat="dataInner in dd.nestList track by $index">
+											<div>
 												<div class ="foreachNestNestRecord"
 													 style="margin-bottom: .5em; margin-left: 2em;"
+													 ng-repeat="dataInner in dd.nestList track by $index"
 													 index="{{$index}}">
 
 													<input name="{{'foreachNestList[' + $parent.$index + '][' + $indexInner + '][nestText1]'}}" type="text" value="" class="form-control" style="display: inline-block; width: 20%;"
